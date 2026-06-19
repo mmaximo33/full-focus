@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Site Blocker - Configuración</title>
+  <link rel="stylesheet" href="options/options.css">
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="header-content">
+        <h1>Full Focus - Site Blocker</h1>
+        <p class="subtitle">Restringe sitios web por horario y días</p>
+      </div>
+      <div class="header-stats">
+        <div class="stat-item">
+          <div class="stat-value" id="rules-count">0</div>
+          <div class="stat-label">Rules</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="messages-count">0</div>
+          <div class="stat-label">Messages</div>
+        </div>
+        <a href="https://github.com/mmaximo33/full-focus" target="_blank" class="github-link" title="Ver en GitHub">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.531-1.525.124-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.656 1.651.248 2.873.124 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921 4.372.861 4.739 1.641 4.739 3.186v2.797c0 .315.193.691.797.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+        </a>
+      </div>
+    </header>
+
+    <nav class="tabs-nav">
+      <button class="tab-btn active" data-tab="rules">
+        <span class="tab-icon">📋</span>
+        <span class="tab-label">Reglas</span>
+        <span class="tab-count" id="rules-tab-count">0</span>
+      </button>
+      <button class="tab-btn" data-tab="messages">
+        <span class="tab-icon">💬</span>
+        <span class="tab-label">Mensajes</span>
+        <span class="tab-count" id="messages-tab-count">0</span>
+      </button>
+    </nav>
+
+    <main class="main-content">
+      <!-- Rules Tab -->
+      <section id="rules-tab" class="tab-panel active">
+        <div class="panel-header">
+          <div class="panel-header-left">
+            <h2>Reglas de Restricción</h2>
+            <p>Configura los sitios que deseas bloquear según su horario de acceso.</p>
+          </div>
+          <div class="panel-header-right">
+            <button class="btn-add" id="add-rule-btn">➕ Agregar Regla</button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table" id="rules-table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Patrón</th>
+                <th>Horario</th>
+                <th>Días</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="rules-tbody"></tbody>
+          </table>
+          <div class="empty-state" id="rules-empty">
+            <span class="empty-icon">📋</span>
+            <p>No hay reglas configuradas.</p>
+            <p class="empty-hint">Haz clic en "Agregar Regla" para crear la primera.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Messages Tab -->
+      <section id="messages-tab" class="tab-panel">
+        <div class="panel-header">
+          <div class="panel-header-left">
+            <h2>Mensajes Personalizados</h2>
+            <p>Los mensajes se muestran aleatoriamente cuando se bloquea un sitio.</p>
+          </div>
+          <div class="panel-header-right">
+            <button class="btn-add" id="add-message-btn">➕ Agregar Mensaje</button>
+          </div>
+        </div>
+
+        <div class="messages-grid" id="messages-grid"></div>
+        <div class="empty-state" id="messages-empty">
+          <span class="empty-icon">💬</span>
+          <p>No hay mensajes configurados.</p>
+          <p class="empty-hint">Haz clic en "Agregar Mensaje" para crear el primero.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>Site Blocker v1.0.0</p>
+    </footer>
+  </div>
+
+  <!-- Modal for Rule -->
+  <div class="modal-overlay" id="rule-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="rule-modal-title">Agregar Nueva Regla</h3>
+        <button class="modal-close" id="rule-modal-close">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="rule-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="rule-name">Nombre del sitio *</label>
+              <input type="text" id="rule-name" class="form-input" placeholder="Facebook" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="rule-url">Dominio *</label>
+              <input type="url" id="rule-url" class="form-input" placeholder="https://facebook.com" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="rule-hour-start">Hora de inicio</label>
+              <input type="time" id="rule-hour-start" class="form-input" value="08:00">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="rule-hour-end">Hora de fin</label>
+              <input type="time" id="rule-hour-end" class="form-input" value="17:00">
+            </div>
+            <div class="form-group full-width">
+              <label class="form-label">Días de bloqueo</label>
+              <div class="days-grid">
+                <label class="day-chip">
+                  <input type="checkbox" value="Lunes" checked>
+                  <span>Lunes</span>
+                </label>
+                <label class="day-chip">
+                  <input type="checkbox" value="Martes" checked>
+                  <span>Martes</span>
+                </label>
+                <label class="day-chip">
+                  <input type="checkbox" value="Miercoles" checked>
+                  <span>Miércoles</span>
+                </label>
+                <label class="day-chip">
+                  <input type="checkbox" value="Jueves" checked>
+                  <span>Jueves</span>
+                </label>
+                <label class="day-chip">
+                  <input type="checkbox" value="Viernes" checked>
+                  <span>Viernes</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Tipo de coincidencia (después de días) -->
+            <div class="form-group full-width">
+              <label class="form-label">Tipo de coincidencia</label>
+              <div class="url-type-selector">
+                <label class="radio-chip">
+                  <input type="radio" name="url_type" value="domain" checked>
+                  <span>Dominio</span>
+                </label>
+                <label class="radio-chip">
+                  <input type="radio" name="url_type" value="pattern">
+                  <span>Pattern</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Sección de Patterns (visible solo cuando es Pattern) -->
+            <div class="form-group full-width patterns-section" id="patterns-section" style="display: none;">
+              <label class="form-label">Patrones ( Paths )</label>
+              <div class="patterns-container">
+                <div class="patterns-list" id="patterns-list">
+                  <!-- Patrones agregados aparecen aquí -->
+                </div>
+                <div class="pattern-input-row">
+                  <input type="text" id="pattern-input" class="form-input" placeholder="ej: /shorts/, /reels/, /video/*">
+                  <button type="button" id="add-pattern-btn" class="btn btn-primary">+</button>
+                </div>
+                <p class="help-text">Usa * como wildcard. Ej: /shorts/* bloquea todos los shorts.</p>
+              </div>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button type="submit" class="btn btn-primary" id="rule-submit-btn">Agregar Regla</button>
+            <button type="button" class="btn btn-secondary" id="rule-cancel-btn">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Message -->
+  <div class="modal-overlay" id="message-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="message-modal-title">Agregar Nuevo Mensaje</h3>
+        <button class="modal-close" id="message-modal-close">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="message-form">
+          <div class="form-group">
+            <label class="form-label" for="message-text">Mensaje *</label>
+            <textarea id="message-text" class="form-textarea" placeholder="¿De verdad vas a perder más tiempo en %rule_name%?" required></textarea>
+            <p class="help-text">Variables: %rule_name% (nombre), %rule_url% (url), %rule_hour_start% (inicio bloqueo), %rule_hour_end% (fin bloqueo), %rule_days% (días), %rule_datetime_end% (fecha fin)</p>
+          </div>
+          <div class="modal-actions">
+            <button type="submit" class="btn btn-primary" id="message-submit-btn">Agregar Mensaje</button>
+            <button type="button" class="btn btn-secondary" id="message-cancel-btn">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="options/options.js"></script>
+</body>
+</html>

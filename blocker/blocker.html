@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acceso Bloqueado - Site Blocker</title>
+  <link rel="stylesheet" href="blocker.css">
+</head>
+<body>
+  <div class="blocker-container">
+    <div class="lock-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+      </svg>
+    </div>
+    <h1>¡Sitio Bloqueado!</h1>
+    <p id="site-info" class="site-info"></p>
+    <p id="block-message" class="block-message"></p>
+    <div class="time-info">
+      <p>Horario de bloqueo</p>
+      <div class="schedule">
+        <span class="schedule-time" id="schedule-time"></span>
+        <span id="schedule-days"></span>
+      </div>
+    </div>
+    <button id="go-back-btn" class="go-back-btn">Volver</button>
+  </div>
+  <script src="blocker.js"></script>
+</body>
+</html>
